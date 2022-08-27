@@ -1,10 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:social_media/firebase_options.dart';
-import 'package:social_media/pages/responsive/responsive_layout_screen.dart';
-import 'package:social_media/pages/responsive/mobile_screen_layout.dart';
-import 'package:social_media/pages/responsive/web_screen_layout.dart';
 import 'package:social_media/pages/screens/login_screen.dart';
+import 'package:social_media/pages/screens/signup_screen.dart';
 import 'package:social_media/utils/cores.dart';
 
 void main() async {
