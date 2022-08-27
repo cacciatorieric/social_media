@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:social_media/backend/auth_methods.dart';
 import 'package:social_media/components/text_field_input.dart';
+import 'package:social_media/utils/routes.dart';
 import 'package:social_media/utils/utils.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -34,6 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (res == 'sucesso') {
       setState(() {
         isLoading = false;
+        Navigator.of(context).pushReplacementNamed(AppRoutes.HOME_SCREEN);
       });
     } else {
       setState(() {
@@ -142,7 +144,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: Text('Entrar'),
                             ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () => Navigator.of(context)
+                        .pushNamed(AppRoutes.SIGNUP_SCREEN),
                     child: const Text('Ainda não tem uma conta? '),
                   ),
                 ],

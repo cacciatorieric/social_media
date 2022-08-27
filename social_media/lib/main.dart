@@ -1,15 +1,20 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:social_media/firebase_options.dart';
+import 'package:social_media/pages/screens/home_screen.dart';
 import 'package:social_media/pages/screens/login_screen.dart';
 import 'package:social_media/pages/screens/signup_screen.dart';
+import 'package:social_media/pages/screens/teste.dart';
 import 'package:social_media/utils/cores.dart';
+import 'package:social_media/utils/routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   runApp(const MyApp());
 }
 
@@ -36,7 +41,12 @@ class MyApp extends StatelessWidget {
           headline6: TextStyle(fontSize: 11),
         ),
       ),
-      home: LoginScreen(),
+      // home: Teste(),
+      routes: {
+        AppRoutes.LOGIN_SCREEN: (ctx) => const LoginScreen(),
+        AppRoutes.SIGNUP_SCREEN: (ctx) => const SignUpScreen(),
+        AppRoutes.HOME_SCREEN: (ctx) => const HomeScreen(),
+      },
     );
   }
 }

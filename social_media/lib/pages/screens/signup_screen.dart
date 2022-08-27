@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:social_media/backend/auth_methods.dart';
 import 'package:social_media/components/text_field_input.dart';
+import 'package:social_media/utils/routes.dart';
 import 'package:social_media/utils/utils.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -31,7 +32,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   void selectImage() async {
-    Uint8List im = await pickeImage(ImageSource.gallery);
+    Uint8List? im = await pickeImage(ImageSource.gallery);
     setState(() {
       _image = im;
     });
@@ -49,9 +50,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
       bio: bioController.text,
       file: _image!,
     );
+
     setState(() {
       _isLoading = false;
     });
+
+    Navigator.of(context).pushReplacementNamed(AppRoutes.HOME_SCREEN);
 
     if (res != 'sucesso') {
       showSnackBar(res, context);
@@ -209,7 +213,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               child: Text('Cadastrar'),
                             ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () =>
+                        Navigator.of(context).pop(AppRoutes.LOGIN_SCREEN),
                     child: const Text('Já está cadastrado? '),
                   ),
                 ],
