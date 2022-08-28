@@ -1,5 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -11,42 +10,179 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String username = '';
-  FirebaseAuth userData = FirebaseAuth.instance;
+  int _page = 0;
+  late PageController pageController;
 
   @override
   void initState() {
     super.initState();
-    getUsername();
+    pageController = PageController();
   }
 
-  void getUsername() async {
-    DocumentSnapshot snap = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(userData.currentUser!.uid)
-        .get();
+  @override
+  void dispose() {
+    super.dispose();
+    pageController.dispose();
+  }
 
+  void navigationTapped(int page) {
+    pageController.jumpToPage(page);
+  }
+
+  void onPageChanged(int page) {
     setState(() {
-      username = (snap.data() as Map<String, dynamic>)['username'];
+      _page = page;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: kIsWeb
-          ? Container(
-              color: Colors.blueAccent,
-              child: Center(
-                child: Text('Seja bem vindo $username'),
-              ),
-            )
-          : Container(
-              color: Colors.greenAccent,
-              child: Center(
-                child: Text('Seja bem vindo $username'),
-              ),
+      body: PageView(
+        controller: pageController,
+        onPageChanged: onPageChanged,
+        children: [
+          kIsWeb
+              ? Container(
+                  color: Colors.blueAccent,
+                  child: const Center(
+                    child: Text(
+                      'Feed Web',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                )
+              : Container(
+                  color: Colors.greenAccent,
+                  child: const Center(
+                    child: Text(
+                      'Feed Mobile',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                ),
+          kIsWeb
+              ? Container(
+                  color: Colors.blueAccent,
+                  child: const Center(
+                    child: Text(
+                      'Search Web',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                )
+              : Container(
+                  color: Colors.greenAccent,
+                  child: const Center(
+                    child: Text(
+                      'Search Mobile',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                ),
+          kIsWeb
+              ? Container(
+                  color: Colors.blueAccent,
+                  child: const Center(
+                    child: Text(
+                      'Add Post Web',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                )
+              : Container(
+                  color: Colors.greenAccent,
+                  child: const Center(
+                    child: Text(
+                      'Add Post Mobile',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                ),
+          kIsWeb
+              ? Container(
+                  color: Colors.blueAccent,
+                  child: const Center(
+                    child: Text(
+                      'Notificações Web',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                )
+              : Container(
+                  color: Colors.greenAccent,
+                  child: const Center(
+                    child: Text(
+                      'Notificações Mobile',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                ),
+          kIsWeb
+              ? Container(
+                  color: Colors.blueAccent,
+                  child: const Center(
+                    child: Text(
+                      'Perfil Web',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                )
+              : Container(
+                  color: Colors.greenAccent,
+                  child: const Center(
+                    child: Text(
+                      'Perfil Mobile',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                ),
+        ],
+      ),
+      bottomNavigationBar: CupertinoTabBar(
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home,
+              color: _page == 0 ? Colors.red : Colors.amber,
             ),
+            backgroundColor: Colors.black,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.search,
+              color: _page == 1 ? Colors.red : Colors.amber,
+            ),
+            label: '',
+            backgroundColor: Colors.black,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.add_circle,
+              color: _page == 2 ? Colors.red : Colors.amber,
+            ),
+            label: '',
+            backgroundColor: Colors.black,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.favorite,
+              color: _page == 3 ? Colors.red : Colors.amber,
+            ),
+            label: '',
+            backgroundColor: Colors.black,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.person,
+              color: _page == 4 ? Colors.red : Colors.amber,
+            ),
+            label: '',
+            backgroundColor: Colors.black,
+          ),
+        ],
+        onTap: navigationTapped,
+      ),
     );
   }
 }
