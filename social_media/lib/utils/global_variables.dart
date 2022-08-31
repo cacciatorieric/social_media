@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:social_media/pages/screens/add_post_screen.dart';
+import 'package:uuid/uuid.dart';
 
 const webScreenSize = 600;
 
@@ -8,10 +9,13 @@ var homeScreenItens = [
   kIsWeb
       ? Container(
           color: Colors.blueAccent,
-          child: const Center(
-            child: Text(
-              'Feed Web',
-              style: TextStyle(color: Colors.black),
+          child: Center(
+            child: TextButton(
+              onPressed: () {},
+              child: const Text(
+                'Feed Web',
+                style: TextStyle(color: Colors.black),
+              ),
             ),
           ),
         )
@@ -27,12 +31,7 @@ var homeScreenItens = [
   kIsWeb
       ? Container(
           color: Colors.blueAccent,
-          child: const Center(
-            child: Text(
-              'Search Web',
-              style: TextStyle(color: Colors.black),
-            ),
-          ),
+          child: const Center(child: Text('Search Web')),
         )
       : Container(
           color: Colors.greenAccent,
@@ -43,7 +42,7 @@ var homeScreenItens = [
             ),
           ),
         ),
-  AddPostScreen(),
+  const AddPostScreen(),
   kIsWeb
       ? Container(
           color: Colors.blueAccent,
