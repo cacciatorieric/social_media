@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => UserProvider(),
+          create: (_) => UserProvider(), 
         ),
       ],
       child: MaterialApp(
@@ -49,11 +49,32 @@ class MyApp extends StatelessWidget {
           ),
         ),
         // home: Teste(),
-        routes: {
-          AppRoutes.LOGIN_SCREEN: (ctx) => const LoginScreen(),
-          AppRoutes.SIGNUP_SCREEN: (ctx) => const SignUpScreen(),
-          AppRoutes.HOME_SCREEN: (ctx) => const HomeScreen(),
-        },
+        home: StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.active) {
+              if (snapshot.hasData) {
+                return const HomeScreen();
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text('Deu erro nessa budega -> ${snapshot.error}'),
+                );
+              }
+            }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+
+            return const LoginScreen();
+          },
+        ),
+        // routes: {
+        //   AppRoutes.LOGIN_SCREEN: (ctx) => const LoginScreen(),
+        //   AppRoutes.SIGNUP_SCREEN: (ctx) => const SignUpScreen(),
+        //   AppRoutes.HOME_SCREEN: (ctx) => const HomeScreen(),
+        // },
       ),
     );
   }

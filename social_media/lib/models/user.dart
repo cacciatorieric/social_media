@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Usuario {
-  final String username;
-  final String uid;
-  final String email;
-  final String bio;
-  final List followers;
-  final List following;
-  final String photoUrl;
+  final String? username;
+  final String? uid;
+  final String? email;
+  final String? bio;
+  final List? followers;
+  final List? following;
+  final String? photoUrl;
 
   const Usuario({
     required this.username,

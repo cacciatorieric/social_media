@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:social_media/provider/user_provider.dart';
+import 'package:social_media/utils/global_variables.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -17,6 +20,12 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     pageController = PageController();
+    addData();
+  }
+
+  addData() async {
+    UserProvider _userProvider = Provider.of(context, listen: false);
+    await _userProvider.refreshUser();
   }
 
   @override
@@ -39,105 +48,10 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
+        physics: const NeverScrollableScrollPhysics(),
         controller: pageController,
         onPageChanged: onPageChanged,
-        children: [
-          kIsWeb
-              ? Container(
-                  color: Colors.blueAccent,
-                  child: const Center(
-                    child: Text(
-                      'Feed Web',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-                )
-              : Container(
-                  color: Colors.greenAccent,
-                  child: const Center(
-                    child: Text(
-                      'Feed Mobile',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-                ),
-          kIsWeb
-              ? Container(
-                  color: Colors.blueAccent,
-                  child: const Center(
-                    child: Text(
-                      'Search Web',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-                )
-              : Container(
-                  color: Colors.greenAccent,
-                  child: const Center(
-                    child: Text(
-                      'Search Mobile',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-                ),
-          kIsWeb
-              ? Container(
-                  color: Colors.blueAccent,
-                  child: const Center(
-                    child: Text(
-                      'Add Post Web',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-                )
-              : Container(
-                  color: Colors.greenAccent,
-                  child: const Center(
-                    child: Text(
-                      'Add Post Mobile',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-                ),
-          kIsWeb
-              ? Container(
-                  color: Colors.blueAccent,
-                  child: const Center(
-                    child: Text(
-                      'Notificações Web',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-                )
-              : Container(
-                  color: Colors.greenAccent,
-                  child: const Center(
-                    child: Text(
-                      'Notificações Mobile',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-                ),
-          kIsWeb
-              ? Container(
-                  color: Colors.blueAccent,
-                  child: const Center(
-                    child: Text(
-                      'Perfil Web',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-                )
-              : Container(
-                  color: Colors.greenAccent,
-                  child: const Center(
-                    child: Text(
-                      'Perfil Mobile',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-                ),
-        ],
+        children: homeScreenItens,
       ),
       bottomNavigationBar: CupertinoTabBar(
         items: [

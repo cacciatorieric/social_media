@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:social_media/backend/auth_methods.dart';
 import 'package:social_media/components/text_field_input.dart';
+import 'package:social_media/pages/screens/home_screen.dart';
 import 'package:social_media/utils/routes.dart';
 import 'package:social_media/utils/utils.dart';
 
@@ -55,7 +56,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
       _isLoading = false;
     });
 
-    Navigator.of(context).pushReplacementNamed(AppRoutes.HOME_SCREEN);
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => const HomeScreen(),
+      ),
+    );
 
     if (res != 'sucesso') {
       showSnackBar(res, context);
@@ -213,8 +218,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               child: Text('Cadastrar'),
                             ),
                   TextButton(
-                    onPressed: () =>
-                        Navigator.of(context).pop(AppRoutes.LOGIN_SCREEN),
+                    onPressed: () => Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => const SignUpScreen(),
+                      ),
+                    ),
                     child: const Text('Já está cadastrado? '),
                   ),
                 ],
