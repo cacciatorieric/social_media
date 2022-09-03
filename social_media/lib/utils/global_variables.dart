@@ -1,33 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:social_media/pages/screens/add_post_screen.dart';
+import 'package:social_media/pages/screens/feed_screen.dart';
 import 'package:uuid/uuid.dart';
 
 const webScreenSize = 600;
 
 var homeScreenItens = [
-  kIsWeb
-      ? Container(
-          color: Colors.blueAccent,
-          child: Center(
-            child: TextButton(
-              onPressed: () {},
-              child: const Text(
-                'Feed Web',
-                style: TextStyle(color: Colors.black),
-              ),
-            ),
-          ),
-        )
-      : Container(
-          color: Colors.greenAccent,
-          child: const Center(
-            child: Text(
-              'Feed Mobile',
-              style: TextStyle(color: Colors.black),
-            ),
-          ),
-        ),
+  const FeedScreen(),
   kIsWeb
       ? Container(
           color: Colors.blueAccent,
