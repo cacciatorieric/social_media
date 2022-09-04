@@ -4,6 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:social_media/backend/firestore_methods.dart';
 import 'package:social_media/components/like_animation.dart';
 import 'package:social_media/models/user.dart';
 import 'package:social_media/provider/user_provider.dart';
@@ -55,7 +56,12 @@ class _PostCardState extends State<PostCard> {
                           ),
                           //Imagem da postagem WEB
                           GestureDetector(
-                            onDoubleTap: () {
+                            onDoubleTap: () async {
+                              await FirestoreMethods().likePost(
+                                widget.snap['postId'],
+                                user.uid!,
+                                widget.snap['likes'],
+                              );
                               setState(() {
                                 isLikeAnimating = true;
                               });
@@ -105,11 +111,22 @@ class _PostCardState extends State<PostCard> {
                                 isAnimating:
                                     widget.snap['likes'].contains(user.uid!),
                                 child: IconButton(
-                                  onPressed: () {},
-                                  icon: const Icon(
-                                    Icons.favorite,
-                                    color: Colors.red,
-                                  ),
+                                  onPressed: () async {
+                                    await FirestoreMethods().likePost(
+                                      widget.snap['postId'],
+                                      user.uid!,
+                                      widget.snap['likes'],
+                                    );
+                                  },
+                                  icon: widget.snap['likes'].contains(user.uid)
+                                      ? const Icon(
+                                          Icons.favorite,
+                                          color: Colors.red,
+                                        )
+                                      : const Icon(
+                                          Icons.favorite_border,
+                                          color: Colors.red,
+                                        ),
                                 ),
                               ),
                               IconButton(
@@ -286,7 +303,12 @@ class _PostCardState extends State<PostCard> {
                         // Imagem da Postagem MOBILE
 
                         GestureDetector(
-                          onDoubleTap: () {
+                          onDoubleTap: () async {
+                            await FirestoreMethods().likePost(
+                              widget.snap['postId'],
+                              user.uid!,
+                              widget.snap['likes'],
+                            );
                             setState(() {
                               isLikeAnimating = true;
                             });
@@ -336,15 +358,32 @@ class _PostCardState extends State<PostCard> {
                               isAnimating:
                                   widget.snap['likes'].contains(user.uid!),
                               child: IconButton(
-                                onPressed: () {},
-                                icon: const Icon(
-                                  Icons.favorite,
-                                  color: Colors.red,
-                                ),
+                                onPressed: () async {
+                                  await FirestoreMethods().likePost(
+                                    widget.snap['postId'],
+                                    user.uid!,
+                                    widget.snap['likes'],
+                                  );
+                                },
+                                icon: widget.snap['likes'].contains(user.uid)
+                                    ? const Icon(
+                                        Icons.favorite,
+                                        color: Colors.red,
+                                      )
+                                    : const Icon(
+                                        Icons.favorite_border,
+                                        color: Colors.red,
+                                      ),
                               ),
                             ),
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () async {
+                                await FirestoreMethods().likePost(
+                                  widget.snap['postId'],
+                                  user.uid!,
+                                  widget.snap['likes'],
+                                );
+                              },
                               icon: const Icon(
                                 Icons.comment_outlined,
                                 color: Colors.black,
