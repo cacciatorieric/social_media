@@ -1,9 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class PostCard extends StatelessWidget {
-  const PostCard({Key? key}) : super(key: key);
+  final snap;
+  const PostCard({Key? key, required this.snap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,10 +18,11 @@ class PostCard extends StatelessWidget {
               //Cabeçalho
               child: Row(
                 children: [
-                  const CircleAvatar(
+                  CircleAvatar(
                     radius: 16,
                     backgroundImage: NetworkImage(
-                        'https://images.unsplash.com/photo-1522252234503-e356532cafd5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=725&q=80'),
+                      snap['profImage'],
+                    ),
                   ),
                   Expanded(
                     child: Padding(
@@ -39,7 +42,7 @@ class PostCard extends StatelessWidget {
                             height: MediaQuery.of(context).size.height * 0.7,
                             width: double.infinity,
                             child: Image.network(
-                              'https://img.freepik.com/vetores-gratis/ilustracao-do-conceito-de-navegacao-online_114360-4684.jpg?w=740&t=st=1662154320~exp=1662154920~hmac=7baf13dc6bfb396368fdd37e75a4d28a1f5242c24bff2c285267703909814797',
+                              snap['postUrl'],
                               fit: BoxFit.scaleDown,
                             ),
                           ),
@@ -92,9 +95,9 @@ class PostCard extends StatelessWidget {
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
-                                  '1,366 curtidas',
-                                  style: TextStyle(
+                                Text(
+                                  '${snap['likes'].length} curtidas',
+                                  style: const TextStyle(
                                     color: Colors.black,
                                   ),
                                 ),
@@ -104,18 +107,18 @@ class PostCard extends StatelessWidget {
                                     top: 8,
                                   ),
                                   child: RichText(
-                                    text: const TextSpan(
+                                    text: TextSpan(
                                       children: [
                                         TextSpan(
-                                          text: 'username',
-                                          style: TextStyle(
+                                          text: snap['username'],
+                                          style: const TextStyle(
                                               color: Colors.black,
                                               fontWeight: FontWeight.bold),
                                         ),
-                                        TextSpan(text: '   '),
+                                        const TextSpan(text: ' '),
                                         TextSpan(
-                                          text: 'A descrição aparecerá aqui',
-                                          style: TextStyle(
+                                          text: snap['description'],
+                                          style: const TextStyle(
                                               color: Colors.black,
                                               fontWeight: FontWeight.bold),
                                         ),
@@ -142,9 +145,11 @@ class PostCard extends StatelessWidget {
                                 Container(
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 4),
-                                  child: const Text(
-                                    '23/10/2022',
-                                    style: TextStyle(
+                                  child: Text(
+                                    DateFormat('dd/MM/yyyy hh:mm').format(
+                                      snap['datePublished'].toDate(),
+                                    ),
+                                    style: const TextStyle(
                                       fontSize: 12,
                                       color: Colors.black,
                                     ),
@@ -203,10 +208,9 @@ class PostCard extends StatelessWidget {
 
             child: Row(
               children: [
-                const CircleAvatar(
+                CircleAvatar(
                   radius: 16,
-                  backgroundImage: NetworkImage(
-                      'https://images.unsplash.com/photo-1522252234503-e356532cafd5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=725&q=80'),
+                  backgroundImage: NetworkImage(snap['profImage']),
                 ),
                 Expanded(
                   child: Padding(
@@ -224,7 +228,7 @@ class PostCard extends StatelessWidget {
                           height: MediaQuery.of(context).size.height * 0.35,
                           width: double.infinity,
                           child: Image.network(
-                            'https://img.freepik.com/vetores-gratis/ilustracao-do-conceito-de-navegacao-online_114360-4684.jpg?w=740&t=st=1662154320~exp=1662154920~hmac=7baf13dc6bfb396368fdd37e75a4d28a1f5242c24bff2c285267703909814797',
+                            snap['postUrl'],
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -277,9 +281,9 @@ class PostCard extends StatelessWidget {
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
-                                '1,366 curtidas',
-                                style: TextStyle(
+                              Text(
+                                '${snap['likes'].length} curtidas',
+                                style: const TextStyle(
                                   color: Colors.black,
                                 ),
                               ),
@@ -289,18 +293,18 @@ class PostCard extends StatelessWidget {
                                   top: 8,
                                 ),
                                 child: RichText(
-                                  text: const TextSpan(
+                                  text: TextSpan(
                                     children: [
                                       TextSpan(
-                                        text: 'username',
-                                        style: TextStyle(
+                                        text: snap['username'],
+                                        style: const TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.bold),
                                       ),
-                                      TextSpan(text: '   '),
+                                      const TextSpan(text: '  '),
                                       TextSpan(
-                                        text: 'A descrição aparecerá aqui',
-                                        style: TextStyle(
+                                        text: snap['description'],
+                                        style: const TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.bold),
                                       ),
@@ -327,9 +331,11 @@ class PostCard extends StatelessWidget {
                               Container(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 4),
-                                child: const Text(
-                                  '23/10/2022',
-                                  style: TextStyle(
+                                child: Text(
+                                  DateFormat('dd/MM/yyyy hh:mm').format(
+                                    snap['datePublished'].toDate(),
+                                  ),
+                                  style: const TextStyle(
                                     fontSize: 12,
                                     color: Colors.black,
                                   ),
