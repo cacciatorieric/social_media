@@ -1,17 +1,31 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:social_media/backend/firestore_methods.dart';
 import 'package:social_media/components/comments_card.dart';
+import 'package:social_media/models/user.dart';
+import 'package:social_media/provider/user_provider.dart';
 
 class CommentsScreen extends StatefulWidget {
-  const CommentsScreen({Key? key}) : super(key: key);
+  final snap;
+  const CommentsScreen({Key? key, required this.snap}) : super(key: key);
 
   @override
   State<CommentsScreen> createState() => _CommentsScreenState();
 }
 
 class _CommentsScreenState extends State<CommentsScreen> {
+  final TextEditingController _commentController = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    _commentController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final Usuario usuario = Provider.of<UserProvider>(context).getUser;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -43,22 +57,31 @@ class _CommentsScreenState extends State<CommentsScreen> {
           padding: const EdgeInsets.only(left: 16, right: 8),
           child: Row(
             children: [
-              const CircleAvatar(
-                backgroundColor: Colors.blue,
+              CircleAvatar(
+                backgroundImage: NetworkImage(usuario.photoUrl!),
               ),
-              const Expanded(
+              Expanded(
                 child: Padding(
-                  padding: EdgeInsets.only(left: 16, right: 8),
+                  padding: const EdgeInsets.only(left: 16, right: 8),
                   child: TextField(
+                    controller: _commentController,
                     decoration: InputDecoration(
-                      hintText: 'Comentar',
+                      hintText: 'Comentar como ${usuario.username!}',
                       border: InputBorder.none,
                     ),
                   ),
                 ),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () async {
+                  await FirestoreMethods().postComment(
+                    widget.snap['postId'],
+                    _commentController.text,
+                    usuario.uid!,
+                    usuario.username!,
+                    usuario.photoUrl!,
+                  );
+                },
                 child: const Text(
                   'Postar',
                   style: TextStyle(

@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:provider/provider.dart';
+import 'package:social_media/models/user.dart';
+import 'package:social_media/provider/user_provider.dart';
 
 class CommentsCard extends StatefulWidget {
   const CommentsCard({Key? key}) : super(key: key);
