@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:social_media/backend/firestore_methods.dart';
 import 'package:social_media/components/like_animation.dart';
 import 'package:social_media/models/user.dart';
+import 'package:social_media/pages/screens/comments_screen.dart';
 import 'package:social_media/provider/user_provider.dart';
 
 class PostCard extends StatefulWidget {
@@ -130,7 +131,12 @@ class _PostCardState extends State<PostCard> {
                                 ),
                               ),
                               IconButton(
-                                onPressed: () {},
+                                onPressed: () => Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const CommentsScreen(),
+                                  ),
+                                ),
                                 icon: const Icon(
                                   Icons.comment_outlined,
                                   color: Colors.black,
@@ -377,13 +383,11 @@ class _PostCardState extends State<PostCard> {
                               ),
                             ),
                             IconButton(
-                              onPressed: () async {
-                                await FirestoreMethods().likePost(
-                                  widget.snap['postId'],
-                                  user.uid!,
-                                  widget.snap['likes'],
-                                );
-                              },
+                              onPressed: () => Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => const CommentsScreen(),
+                                ),
+                              ),
                               icon: const Icon(
                                 Icons.comment_outlined,
                                 color: Colors.black,
