@@ -270,10 +270,14 @@ class _PostCardState extends State<PostCard> {
                                       vertical: 16,
                                     ),
                                     shrinkWrap: true,
-                                    children: ['Deletar']
+                                    children: ['Excluir comentário']
                                         .map(
                                           (e) => InkWell(
-                                            onTap: () {},
+                                            onTap: () async {
+                                              FirestoreMethods().deletePost(
+                                                  widget.snap['postId']);
+                                              Navigator.of(context).pop();
+                                            },
                                             child: Container(
                                               padding:
                                                   const EdgeInsets.symmetric(
@@ -506,10 +510,14 @@ class _PostCardState extends State<PostCard> {
                         child: ListView(
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           shrinkWrap: true,
-                          children: ['Deletar']
+                          children: ['Excluir comentário']
                               .map(
                                 (e) => InkWell(
-                                  onTap: () {},
+                                  onTap: () async {
+                                    FirestoreMethods()
+                                        .deletePost(widget.snap['postId']);
+                                    Navigator.of(context).pop();
+                                  },
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 12, horizontal: 16),

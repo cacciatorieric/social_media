@@ -9,7 +9,6 @@ import 'package:uuid/uuid.dart';
 class FirestoreMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-//Método para postar
   Future<String> uploadPost(
     String uid,
     String description,
@@ -18,7 +17,6 @@ class FirestoreMethods {
     Uint8List file,
   ) async {
     String res = 'Foi detectado um erro, tente novamente';
-
     try {
       String photoUrl =
           await StorageMethods().uploadImageToStorage('posts', file, true);
@@ -78,6 +76,14 @@ class FirestoreMethods {
       } else {
         print('Preencher o campo de comentários');
       }
+    } catch (erro) {
+      print(erro.toString());
+    }
+  }
+
+  Future<void> deletePost(String postId) async {
+    try {
+      await _firestore.collection('posts').doc(postId).delete();
     } catch (erro) {
       print(erro.toString());
     }
