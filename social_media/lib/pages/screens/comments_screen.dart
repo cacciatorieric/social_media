@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -47,7 +48,27 @@ class _CommentsScreenState extends State<CommentsScreen> {
           ),
         ),
       ),
-      body: const CommentsCard(),
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection('posts')
+            .doc(widget.snap['postId'])
+            .collection('comments')
+            .orderBy('datePublished', descending: true)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          return ListView.builder(
+              itemCount: (snapshot.data! as dynamic).docs.length,
+              itemBuilder: (context, index) => CommentsCard(
+                    snap: (snapshot.data! as dynamic).docs[index].data(),
+                  ));
+        },
+      ),
       bottomNavigationBar: SafeArea(
         child: Container(
           height: kToolbarHeight,
@@ -81,6 +102,10 @@ class _CommentsScreenState extends State<CommentsScreen> {
                     usuario.username!,
                     usuario.photoUrl!,
                   );
+
+                  setState(() {
+                    _commentController.text = '';
+                  });
                 },
                 child: const Text(
                   'Postar',

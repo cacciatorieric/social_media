@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
@@ -9,6 +10,7 @@ import 'package:social_media/components/like_animation.dart';
 import 'package:social_media/models/user.dart';
 import 'package:social_media/pages/screens/comments_screen.dart';
 import 'package:social_media/provider/user_provider.dart';
+import 'package:social_media/utils/utils.dart';
 
 class PostCard extends StatefulWidget {
   final snap;
@@ -20,6 +22,29 @@ class PostCard extends StatefulWidget {
 
 class _PostCardState extends State<PostCard> {
   bool isLikeAnimating = false;
+  int commentLen = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    getComments();
+  }
+
+  void getComments() async {
+    try {
+      QuerySnapshot snap = await FirebaseFirestore.instance
+          .collection('posts')
+          .doc(widget.snap['postId'])
+          .collection('comments')
+          .get();
+      commentLen = snap.docs.length;
+    } catch (erro) {
+      showSnackBar(
+          'Não foi possivel recuperar os comentarios.\nSegue erro -> ${erro.toString()}',
+          context);
+    }
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +55,6 @@ class _PostCardState extends State<PostCard> {
               color: Theme.of(context).colorScheme.primary,
               padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16)
                   .copyWith(right: 0),
-              //Cabeçalho
               child: Row(
                 children: [
                   CircleAvatar(
@@ -55,7 +79,6 @@ class _PostCardState extends State<PostCard> {
                                   color: Colors.black),
                             ),
                           ),
-                          //Imagem da postagem WEB
                           GestureDetector(
                             onDoubleTap: () async {
                               await FirestoreMethods().likePost(
@@ -102,9 +125,6 @@ class _PostCardState extends State<PostCard> {
                               ],
                             ),
                           ),
-
-                          //Seção de likes e comentarios WEB
-
                           Row(
                             children: [
                               LikeAnimation(
@@ -164,9 +184,6 @@ class _PostCardState extends State<PostCard> {
                               ),
                             ],
                           ),
-
-                          //Descrição e numeros de comentarios WEB
-
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 16),
                             child: Column(
@@ -210,9 +227,9 @@ class _PostCardState extends State<PostCard> {
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 4),
-                                      child: const Text(
-                                        'Ver todos os comentários',
-                                        style: TextStyle(
+                                      child: Text(
+                                        'Mostrar $commentLen comentários',
+                                        style: const TextStyle(
                                           fontSize: 16,
                                           color: Colors.black54,
                                         ),
@@ -281,9 +298,6 @@ class _PostCardState extends State<PostCard> {
             color: Theme.of(context).colorScheme.primary,
             padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16)
                 .copyWith(right: 0),
-
-            //Cabeçalho MOBILE
-
             child: Row(
               children: [
                 CircleAvatar(
@@ -306,9 +320,6 @@ class _PostCardState extends State<PostCard> {
                                 color: Colors.black),
                           ),
                         ),
-
-                        // Imagem da Postagem MOBILE
-
                         GestureDetector(
                           onDoubleTap: () async {
                             await FirestoreMethods().likePost(
@@ -355,9 +366,6 @@ class _PostCardState extends State<PostCard> {
                             ],
                           ),
                         ),
-
-                        //Seção de likes e comentarios MOBILE
-
                         Row(
                           children: [
                             LikeAnimation(
@@ -417,9 +425,6 @@ class _PostCardState extends State<PostCard> {
                             ),
                           ],
                         ),
-
-                        //Descrição e numeros de comentarios MOBILE
-
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: Column(
@@ -463,9 +468,9 @@ class _PostCardState extends State<PostCard> {
                                   child: Container(
                                     padding:
                                         const EdgeInsets.symmetric(vertical: 4),
-                                    child: const Text(
-                                      'Ver todos os comentários',
-                                      style: TextStyle(
+                                    child: Text(
+                                      'Mostrar os $commentLen comentários',
+                                      style: const TextStyle(
                                         fontSize: 16,
                                         color: Colors.black54,
                                       ),

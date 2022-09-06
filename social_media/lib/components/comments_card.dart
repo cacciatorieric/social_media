@@ -2,12 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:social_media/models/user.dart';
 import 'package:social_media/provider/user_provider.dart';
 
 class CommentsCard extends StatefulWidget {
-  const CommentsCard({Key? key}) : super(key: key);
+  final snap;
+  const CommentsCard({Key? key, required this.snap}) : super(key: key);
 
   @override
   State<CommentsCard> createState() => _CommentsCardState();
@@ -20,8 +22,8 @@ class _CommentsCardState extends State<CommentsCard> {
       padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 16),
       child: Row(
         children: [
-          const CircleAvatar(
-            backgroundColor: Colors.red,
+          CircleAvatar(
+            backgroundImage: NetworkImage(widget.snap['profilePic']),
             radius: 18,
           ),
           Expanded(
@@ -32,33 +34,35 @@ class _CommentsCardState extends State<CommentsCard> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   RichText(
-                    text: const TextSpan(
+                    text: TextSpan(
                       children: [
                         TextSpan(
-                          text: 'usuario',
-                          style: TextStyle(
+                          text: widget.snap['name'],
+                          style: const TextStyle(
                               fontWeight: FontWeight.bold, color: Colors.white),
                         ),
-                        TextSpan(
+                        const TextSpan(
                           text: '  ',
                           style: TextStyle(
                               fontWeight: FontWeight.bold, color: Colors.white),
                         ),
                         TextSpan(
-                          text: 'descrição escrita / para escrever',
-                          style: TextStyle(color: Colors.white),
+                          text: widget.snap['text'],
+                          style: const TextStyle(color: Colors.white),
                         ),
                       ],
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.only(
+                  Padding(
+                    padding: const EdgeInsets.only(
                       top: 4,
                     ),
                     child: Text(
-                      '23/10/2022',
-                      style:
-                          TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                      DateFormat('dd/MM/yyyy hh:mm').format(
+                        widget.snap['datePublished'].toDate(),
+                      ),
+                      style: const TextStyle(
+                          fontSize: 12, fontWeight: FontWeight.w400),
                     ),
                   ),
                 ],
